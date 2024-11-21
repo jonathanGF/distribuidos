@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Notas y Usuarios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recordatorios Express</h1>
+        </header>
+
+        <!-- Contenedor de columnas -->
+        <div class="main-content">
+            <!-- Sección para Notas (Izquierda) -->
+            <section class="notes-section">
+                <h2>Notas</h2>
+                <div class="button-container">
+                    <button onclick="fetchNotas()">Ver Notas</button>
+                    <button onclick="deleteNotas()">Borrar Notas</button>
+                </div>
+                <pre id="notasOutput" class="output"></pre>
+                <form id="notaForm">
+                    <input type="text" id="nuevaNota" placeholder="Escribe una nueva nota" required>
+                    <button type="submit">Agregar Nota</button>
+                </form>
+            </section>
+
+            <!-- Sección para Usuarios (Derecha) -->
+            <section class="users-section">
+                <h2>Usuarios</h2>
+                <div class="button-container">
+                    <button onclick="fetchUsuarios()">Ver Usuarios</button>
+                    <button onclick="deleteUsuarios()">Borrar Usuarios</button>
+                </div>
+                <pre id="usuariosOutput" class="output"></pre>
+                <form id="usuarioForm">
+                    <input type="text" id="nuevoUsuario" placeholder="Escribe el nombre del usuario" required>
+                    <button type="submit">Registrar Usuario</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Función para obtener las notas
+        function fetchNotas() {
+            fetch('http://localhost:8080')
+                .then(response => response.json())
+                .then(data => {
+                    const notasOutput = document.getElementById('notasOutput');
+                    notasOutput.innerHTML = '';
+
+                    if (data.length > 0) {
+                        let listaNotas = '<ul>';
+                        data.forEach(nota => {
+                            listaNotas += `<li>${nota}</li>`;
+                        });
+                        listaNotas += '</ul>';
+                        notasOutput.innerHTML = listaNotas;
+                    } else {
+                        notasOutput.innerHTML = 'No hay notas disponibles.';
+                    }
+                })
+                .catch(error => console.error('Error al obtener las notas:', error));
+        }
+
+        // Función para obtener los usuarios
+        function fetchUsuarios() {
+            fetch('http://localhost:8081')
+                .then(response => response.json())
+                .then(data => {
+                    const usuariosOutput = document.getElementById('usuariosOutput');
+                    usuariosOutput.innerHTML = '';
+
+                    if (data.length > 0) {
+                        let listaUsuarios = '<ul>';
+                        data.forEach(usuario => {
+                            listaUsuarios += `<li>${usuario}</li>`;
+                        });
+                        listaUsuarios += '</ul>';
+                        usuariosOutput.innerHTML = listaUsuarios;
+                    } else {
+                        usuariosOutput.innerHTML = 'No hay usuarios registrados.';
+                    }
+                })
+                .catch(error => console.error('Error al obtener los usuarios:', error));
+        }
+
+        // Función para borrar todas las notas
+        function deleteNotas() {
+            fetch('http://localhost:8080', {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Notas borradas:', data);
+                    fetchNotas(); // Actualizar la vista de notas después de borrarlas
+                })
+                .catch(error => console.error('Error al borrar las notas:', error));
+        }
+
+        // Función para borrar todos los usuarios
+        function deleteUsuarios() {
+            fetch('http://localhost:8081', {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Usuarios borrados:', data);
+                    fetchUsuarios(); // Actualizar la vista de usuarios después de borrarlos
+                })
+                .catch(error => console.error('Error al borrar los usuarios:', error));
+        }
+
+        // Función para agregar una nueva nota
+        document.getElementById('notaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nuevaNota = document.getElementById('nuevaNota').value;
+            if (nuevaNota) {
+                fetch('http://localhost:8080', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nota: nuevaNota })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Nota agregada:', data);
+                        fetchNotas(); // Actualizar las notas
+                        document.getElementById('nuevaNota').value = ''; // Limpiar el formulario
+                    })
+                    .catch(error => console.error('Error al agregar la nota:', error));
+            }
+        });
+
+        // Función para registrar un nuevo usuario
+        document.getElementById('usuarioForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nuevoUsuario = document.getElementById('nuevoUsuario').value;
+            if (nuevoUsuario) {
+                fetch('http://localhost:8081', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario: nuevoUsuario })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Usuario registrado:', data);
+                        fetchUsuarios(); // Actualizar los usuarios
+                        document.getElementById('nuevoUsuario').value = ''; // Limpiar el formulario
+                    })
+                    .catch(error => console.error('Error al registrar el usuario:', error));
+            }
+        });
+    </script>
+</body>
+</html>

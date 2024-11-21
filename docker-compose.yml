@@ -1,0 +1,26 @@
+
+
+services:
+  notas-service:
+    build:
+      context: ./notas
+      dockerfile: Dockerfile-notas  # Especifica el Dockerfile renombrado
+    container_name: notas_service
+    ports:
+      - "8080:8080"
+  
+  usuarios-service:
+    build:
+      context: ./usuarios
+      dockerfile: Dockerfile-usuarios  # Especifica el Dockerfile renombrado
+    container_name: usuarios_service
+    ports:
+      - "8081:8081"
+  
+  interfaz-service:
+    image: httpd:latest
+    container_name: interfaz_service
+    ports:
+      - "8082:80"
+    volumes:
+      - ./interfaz:/usr/local/apache2/htdocs/

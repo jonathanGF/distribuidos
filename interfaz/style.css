@@ -1,0 +1,128 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('ImagenFondo.webp') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    color: #333;
+}
+
+/* Contenedor principal */
+.container {
+    width: 100%;
+    max-width: 1100px; /* Aumento el ancho máximo */
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Título */
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Contenedor de las dos secciones (notas y usuarios) */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px; /* Espacio entre las dos columnas */
+}
+
+/* Estilo para las secciones (Notas y Usuarios) */
+.notes-section, .users-section {
+    width: 48%; /* Asignamos 48% del ancho a cada sección */
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los botones */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    font-size: 1em;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 48%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Formularios */
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background-color: #f9f9f9;
+}
+
+form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Área de salida */
+.output {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    color: #333;
+    border-radius: 5px;
+    height: 150px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column; /* Apilar las secciones en pantallas pequeñas */
+        align-items: center;
+    }
+
+    .notes-section, .users-section {
+        width: 100%; /* Ocupa todo el ancho en pantallas pequeñas */
+        margin-bottom: 20px; /* Separar las secciones en pantallas pequeñas */
+    }
+
+    button {
+        width: 100%; /* Botones ocupan todo el ancho en pantallas pequeñas */
+        margin-bottom: 10px; /* Separar los botones */
+    }
+}
